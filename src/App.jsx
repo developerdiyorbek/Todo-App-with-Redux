@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // components
-import { addTodo, deleteTodo, editTodo, toggleTodo } from "./Store/TodoSlice";
+import { addTodo, editTodo } from "./Store/TodoSlice";
 
 // Toastify
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EditModal from "./components/EditModal";
+import TodoItem from "./components/TodoItem";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -33,18 +34,6 @@ const App = () => {
     } else {
       toast.warning("Write a task!");
     }
-  };
-
-  // Delete Todo
-  const handleDeleteTodo = (id) => {
-    dispatch(deleteTodo(id));
-  };
-
-  // openEditModal
-  const openEditModal = (todo) => {
-    setEditedTodoId(todo.id);
-    setEditedTodoText(todo.text);
-    setEditModal(true);
   };
 
   // edited Todo
@@ -76,43 +65,13 @@ const App = () => {
       </form>
       <ul>
         {todos.map((todo) => (
-          <li
-            className="flex items-center justify-between gap-3 border p-2 mb-2 bg-white shadow-md rounded px-2 "
+          <TodoItem
             key={todo.id}
-          >
-            <div className="flex items-center gap-2 w-full h-full">
-              <input
-                type="checkbox"
-                id={`checkbox${todo.id}`}
-                className="cursor-pointer"
-                onChange={() => dispatch(toggleTodo(todo.id))}
-              />
-              <label
-                htmlFor={`checkbox${todo.id}`}
-                className={
-                  todo.isCompleted
-                    ? "text-gray-400 cursor-pointer w-full block h-full line-through"
-                    : "text-gray-600 cursor-pointer w-full block h-full"
-                }
-              >
-                {todo.text}
-              </label>
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                className="bg-sky-500 rounded text-white px-2 py-1 hover:opacity-80 duration-100"
-                onClick={() => openEditModal(todo)}
-              >
-                Edit
-              </button>
-              <button
-                className="bg-red-500 rounded text-white px-2 py-1 hover:opacity-80 duration-100"
-                onClick={() => handleDeleteTodo(todo.id)}
-              >
-                Delete
-              </button>
-            </div>
-          </li>
+            todo={todo}
+            setEditedTodoId={setEditedTodoId}
+            setEditedTodoText={setEditedTodoText}
+            setEditModal={setEditModal}
+          />
         ))}
       </ul>
       <EditModal

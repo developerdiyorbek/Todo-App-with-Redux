@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// eslint-disable-next-line react-refresh/only-export-components
 const TodoSlice = createSlice({
   name: "todos",
   initialState: [],
   reducers: {
     setTodos: (state, action) => {
-      return action.payload; // Overwrite todos with the provided array
+      return action.payload;
     },
     addTodo: (state, action) => {
       return [...state, action.payload];
